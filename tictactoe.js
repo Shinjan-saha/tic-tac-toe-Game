@@ -57,7 +57,14 @@ document.addEventListener("DOMContentLoaded", () => {
         disableBoxes();
     };
 
+    const showDraw = () => {
+        msg.innerText = "Draw between X & O";
+        msgContainer.classList.remove("hide");
+        disableBoxes();
+    };
+
     const checkWinner = () => {
+        let filledBoxes = 0;
         for (let pattern of winPatterns) {
             let pos1Val = boxes[pattern[0]].innerText;
             let pos2Val = boxes[pattern[1]].innerText;
@@ -66,8 +73,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (pos1Val === pos2Val && pos2Val === pos3Val) {
                     console.log("winner", pos1Val);
                     showWinner(pos1Val);
+                    return;
                 }
             }
+        }
+        // Count filled boxes
+        boxes.forEach((box) => {
+            if (box.innerText !== "") {
+                filledBoxes++;
+            }
+        });
+        // If all boxes are filled and no winner, it's a draw
+        if (filledBoxes === boxes.length) {
+            console.log("Draw");
+            showDraw();
         }
     };
 
